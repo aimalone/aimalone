@@ -1,0 +1,246 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+import numpy as np
+
+# Load data 
+CO2_data = pd.read_csv("CO2_data.csv")
+print (CO2_data)
+######################################################################
+#mean yearly average
+mean_yearly_CO2 = CO2_data.groupby('year')['average'].mean()
+
+print(mean_yearly_CO2)
+mean_yearly_CO2_df = mean_yearly_CO2.reset_index()
+
+# plot 
+plt.figure(figsize=(10, 6))
+plt.xticks(mean_yearly_CO2_df['year'][::4])
+plt.plot(mean_yearly_CO2_df['year'], mean_yearly_CO2_df['average'], marker='s', linestyle='-', color='green')
+plt.title('Global Mean Yearly CO2 Emissions', fontsize=14, fontweight = 'bold')
+plt.xlabel('Year', fontsize=12, fontweight = 'bold')
+plt.ylabel('Mean CO2 Emissions (ppm)', fontsize=12, fontweight = 'bold')
+plt.savefig('mean.pdf', format='pdf')
+plt.grid(True)
+plt.show()
+
+# display the first 10 rows as a table
+df.head(5)
+###########################################################################################
+# group the data by year and calculate the average emissions per year 
+yearly_avg_emissions = df.groupby('year')['average'].mean()
+
+# get years and average emissions
+years = yearly_avg_emissions.index
+average_emissions = yearly_avg_emissions.values
+
+# bar graph
+colors = plt.cm.viridis(np.linspace(0, 1, len(years)))  # Generate a range of colors
+plt.figure(figsize=(12, 6))
+plt.bar(years, average_emissions, color=colors)
+plt.title('Average CO2 Emissions by Year', fontsize=14, fontweight = 'bold')
+plt.xlabel('Year', fontsize = 12, fontweight = 'bold')
+plt.ylabel('Average CO2 Emissions', fontsize = 12, fontweight = 'bold')
+plt.grid(axis='y')
+
+plt.savefig('CO2_average_by_year.pdf', format='pdf')
+plt.show()
+###########################################################################################
+#x-axis
+y = CO2_data.iloc[:, 3]  # Position 3 for y-axis (Average)
+
+#total percent increase
+total_percent_increase = ((y.iloc[-1] - y.iloc[0]) / y.iloc[0]) * 100
+
+print(f"Total percent increase: {total_percent_increase:.2f}%")
+###########################################################################################
+# group the data by month (df.groupby) and calculate the average CO2 emissions for each month
+monthly_avg = df.groupby('month')['average'].mean()
+
+# month with the highest average CO2 emissions
+highest_emission_year = monthly_avg.idxmax()
+
+print(f"The month with the highest 'average' CO2 emissions is month {highest_emission_month}.")
+
+# group the data by month (df.groupby) and calculate the average CO2 emissions for each month
+monthly_avg = df.groupby('month')['average'].mean()
+
+#  month with the lowest average CO2 emissions
+lowest_emission_year = monthly_avg.idxmax()
+
+
+print(f"The month with the lowest average CO2 emissions is month {lowest_emission_month}.")
+###########################################################################################
+# filter the data for the 5th and 8th months
+data_5th_month = df[df['month'] == 5]
+data_8th_month = df[df['month'] == 8]
+
+
+# plot
+plt.figure(figsize=(10, 6))
+plt.plot(data_5th_month['year'], data_5th_month['average'], label='5th Month', marker='s', linestyle='-', color='purple')
+plt.plot(data_8th_month['year'], data_8th_month['average'], label='8th Month', marker='o', linestyle='-', color = 'cyan')
+plt.title('Average CO2 Emissions for the 5th and 8th Months', fontsize = 14, fontweight = 'bold')
+plt.xlabel('Year', fontsize = 12, fontweight = 'bold')
+plt.ylabel('Average CO2 Emissions', fontsize = 12, fontweight = 'bold')
+plt.legend()
+plt.grid(True)
+
+
+plt.savefig('average_5_8.pdf', format='pdf')
+plt.show()
+###########################################################################################
+# group the data by year (df.groupby) and calculate the average CO2 emissions for each year
+yearly_avg_emissions = df.groupby('year')['average'].mean()
+
+# calculate the year with the lowest 'average' CO2 emissions
+lowest_emission_year = yearly_avg_emissions.idxmin()
+
+print(f"The year with the lowesr average CO2 emissions is {lowest_emission_year}.")
+# filter to include only the year 1979
+data_1979 = df[df['year'] == 1979]
+
+# plot
+plt.figure(figsize=(10, 6))
+plt.plot(data_1979['month'], data_1979['average'], marker='$\u2665$', linestyle='-', color='b')
+plt.title('CO2 Emissions for the Year 1979')
+plt.xlabel('Month')
+plt.ylabel('Average CO2 Emissions')
+plt.grid(True)
+
+plt.show()
+###########################################################################################
+# group the data by year (df.groupby) and calculate the average CO2 emissions for each year
+yearly_avg_emissions = df.groupby('year')['average'].mean()
+
+# calculate the year with the highest 'average' CO2 emissions
+highest_emission_year = yearly_avg_emissions.idxmax()
+
+print(f"The year with the highest average CO2 emissions is {highest_emission_year}.")
+
+# sort the data by the "average" in descending order 
+df_sorted = df.sort_values(by='average', ascending=False)
+
+# find the 2nd highest "average" year
+if len(unique_years) >= 2:
+    second_highest = unique_years[1]  
+    second_high = df_sorted[df_sorted['year'] == second_highest]['average'].mean()
+
+print(f"The year with the 2nd highest mean 'average' carbon emission is {second_highest} with a value of {second_high}ppm.")
+
+years_to_plot = [1979,1985, 1990, 1995,2000,2005, 2010,2015,2020,]
+data_years = df[df['year'].isin(years_to_plot)]
+
+#plot
+plt.figure(figsize=(10, 6))
+
+for year in years_to_plot:
+    data_year = data_years[data_years['year'] == year]
+    plt.plot(data_year['month'], data_year['average'], marker='o', linestyle='-', label=f'Year {year}')
+    
+plt.axvline(x=8, color='black', linestyle='--', label='Month 8')
+plt.axvline (x=5, color='black', linestyle='--', label='Month 5')
+plt.title('CO2 Emissions for Every 5 Years: starting at 1980 to 2020', fontsize = 14, fontweight = 'bold')
+plt.xlabel('Month', fontsize = 12, fontweight = 'bold')
+plt.ylabel('Average CO2 Emissions', fontsize = 12, fontweight = 'bold')
+plt.grid(True)
+plt.legend()
+
+plt.savefig('emissions_every_5_years.pdf', format='pdf')
+plt.show()
+###########################################################################################
+import seaborn as sns
+
+years_to_plot = [1979, 1985, 1990, 1995, 2000, 2005, 2010, 2015, 2020]
+data_years = df[df['year'].isin(years_to_plot)]
+
+# create heat map
+heatmap_data = data_years.pivot('month', 'year', 'average')
+
+# plot
+plt.figure(figsize=(12, 8))
+sns.heatmap(heatmap_data, cmap='YlGnBu', annot=False, fmt=".2f", cbar_kws={'label': 'Average CO2 Emissions (ppm)'}, vmax=heatmap_data.max().max())
+plt.title('CO2 Emissions Heatmap (1979-2020)', fontsize=14, fontweight='bold')
+
+
+plt.xlabel('Year', fontsize=12, fontweight='bold')
+plt.ylabel('Month', fontsize=12, fontweight='bold')
+plt.savefig('emissions_heatmap.pdf', format='pdf')
+
+plt.savefig('heatmap.pdf', format='pdf')
+plt.show()
+###########################################################################################
+# filter the data to include only the year 1979
+data_2022= df[df['year'] == 2022]
+
+# Plot
+plt.figure(figsize=(10, 6))
+plt.plot(data_2022['month'], data_2022['average'], marker='o', linestyle='-', color='b')
+plt.title('CO2 Emissions for the Year 2022')
+plt.xlabel('Month')
+plt.ylabel('Average CO2 Emissions')
+plt.grid(True)
+
+plt.show()
+###########################################################################################
+# sort by the "trend" in ascending order
+df_sorted = df.sort_values(by='average_unc', ascending=True)
+
+# unique years 
+unique_years = df_sorted['year'].unique()
+
+# find the 5th lowest "trend" year
+if len(unique_years) >= 5:
+    fifth_lowest_trend_year = unique_years[0]
+    fifth_lowest_trend_value = df_sorted[df_sorted['year'] == fifth_lowest_trend_year]['average_unc'].iloc[0]
+    print(f"The year with the 5th lowest 'trend' is {fifth_lowest_trend_year} with a value of {fifth_lowest_trend_value}.")
+
+# group the data by month and calculate highest the average_unc CO2 emissions for each year
+monthly_avgun_emissions = df.groupby('year')['average_unc'].mean()
+
+# find the month with the highest average_unc CO2 emissions
+highest_average_unc_year = monthly_avgun_emissions.idxmax()
+print(f"The year with the highest average_unc CO2 emissions is {highest_average_unc_year}.")
+###########################################################################################
+# filter 
+data_1979 = df[df['year'] == 1979]
+data_1990 = df[df['year'] == 1990]
+data_2000 = df[df['year'] == 2000]
+data_2010 = df[df['year'] == 2010]
+data_2020 = df[df['year'] == 2020]
+
+
+# Plot
+plt.figure(figsize=(10, 6))
+plt.plot(data_1979['month'], data_1979['average_unc'], marker='p', linestyle='-', color='blue', label = 1979)
+plt.plot(data_1990['month'], data_1990['average_unc'], marker='o', linestyle=':', color='crimson',label = 1990)
+plt.plot(data_2000['month'], data_2000['average_unc'], marker='s', linestyle='-.', color='gold', label = 2000)
+plt.plot(data_2010['month'], data_2010['average_unc'], marker='^', linestyle='--', color='fuchsia', label = 2010)
+plt.plot(data_2020['month'], data_2020['average_unc'], marker='.', linestyle='-', color='lawngreen', label = 2020)
+plt.legend()
+plt.title('Average Uncertainty for the Years 1979, 1990, 2000, 2010 and 2020', fontsize = 14, fontweight = 'bold')
+plt.xlabel('Month', fontsize = 12, fontweight = 'bold')
+plt.ylabel('Average Uncertainty', fontsize = 12, fontweight = 'bold')
+plt.axvline(x=8, color='black', linestyle='--', label='Month 8')
+plt.axvline (x=5, color='black', linestyle='--', label='Month 5')
+plt.grid(True)
+plt.savefig('avg-unc-all.pdf', format='pdf')
+plt.show()
+###########################################################################################
+years_to_plot = [1979, 2022]
+data_years = df[df['year'].isin(years_to_plot)]
+
+# plot with separate lines for each year
+plt.figure(figsize=(10, 6))
+
+for year in years_to_plot:
+    data_year = data_years[data_years['year'] == year]
+    plt.plot(data_year['month'], data_year['average'], marker='o', linestyle='-', label=f'Year {year}')
+    
+plt.title('Average CO2 Emissions for 1979 and 2022', fontsize = 14, fontweight = 'bold')
+plt.xlabel('Month', fontsize = 12, fontweight = 'bold')
+plt.ylabel('Average CO2 Emissions', fontsize = 12, fontweight = 'bold')
+plt.grid(True)
+plt.legend()
+
+plt.savefig('emissions19792022.pdf', format='pdf')
+plt.show()
